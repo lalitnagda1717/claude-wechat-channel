@@ -19,7 +19,7 @@
 ### 前置条件
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v2.1.80+
-- [Bun](https://bun.sh/) 运行时
+- [Node.js](https://nodejs.org/) 18+ 或 [Bun](https://bun.sh/) 运行时
 
 ### 1. 注册 MCP server
 
@@ -42,11 +42,13 @@
 claude --dangerously-load-development-channels server:wechat
 ```
 
-首次启动会在终端显示微信二维码，用微信扫码登录。登录凭证会保存到 `~/.wechat-claude/`，后续启动自动恢复。
+首次启动会自动弹出微信登录二维码图片，用微信扫码登录。登录凭证会保存到 `~/.wechat-claude/`，后续启动自动恢复。
+
+> 如需重新登录，删除凭证目录即可：`rm -rf ~/.wechat-claude/accounts/`
 
 ### 3. 开始使用
 
-从另一个微信账号给登录的账号发消息，Claude Code 会自动接收并回复。
+从「微信ClawBot」发消息，Claude Code 会自动接收并回复。
 
 ## 配置
 
@@ -77,6 +79,7 @@ claude --dangerously-load-development-channels server:wechat
 - **自动分段**：微信单条消息限制 4000 字符，超长回复会自动拆分为多条发送
 - **Markdown 转纯文本**：Claude 的回复会自动去除 markdown 格式（微信不支持渲染）
 - **凭证持久化**：微信登录凭证保存在 `DATA_DIR` 目录下，重启自动恢复登录状态
+- **二维码自动打开**：登录二维码会保存为图片并自动用系统默认程序打开（macOS / Linux / Windows）
 
 ## 注意事项
 

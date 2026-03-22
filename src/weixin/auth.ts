@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
+import { exec } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import QRCode from "qrcode";
 
 import { logger } from "../logger.js";
 import { redactToken } from "./util/redact.js";
@@ -97,6 +99,17 @@ export function saveSyncBuf(buf: string): void {
 // QR Login
 // ---------------------------------------------------------------------------
 
+/** Try to open a file with the system's default viewer (non-blocking, best-effort). */
+function openFile(filePath: string): void {
+  const cmd =
+    process.platform === "darwin" ? "open" :
+    process.platform === "win32" ? "start" :
+    "xdg-open";
+  exec(`${cmd} ${JSON.stringify(filePath)}`, (err) => {
+    if (err) logger.debug(`openFile failed: ${err.message}`);
+  });
+}
+
 export const DEFAULT_ILINK_BOT_TYPE = "3";
 
 const QR_LONG_POLL_TIMEOUT_MS = 35_000;
@@ -177,13 +190,20 @@ export async function loginWithQR(opts: {
     return { connected: false, message: `获取二维码失败: ${String(err)}` };
   }
 
-  // Display QR code in terminal
+  // Display QR code — save as image and auto-open (for MCP mode where stderr is hidden)
+  const qrImagePath = path.join(dataDir, "qr-login.png");
   try {
-    const qrterm = await import("qrcode-terminal");
+    await QRCode.toFile(qrImagePath, qrResponse.qrcode_img_content, { width: 400, margin: 2 });
+    openFile(qrImagePath);
+    logger.info(`微信登录二维码已保存并打开: ${qrImagePath}`);
+  } catch {
+    logger.warn("无法生成二维码图片文件");
+  }
+  // Also print to stderr as fallback (visible when running directly)
+  try {
+    const terminalQR = await QRCode.toString(qrResponse.qrcode_img_content, { type: "terminal", small: true });
     console.error("\n请使用微信扫描以下二维码:\n");
-    qrterm.default.generate(qrResponse.qrcode_img_content, { small: true }, (qr: string) => {
-      console.error(qr);
-    });
+    console.error(terminalQR);
   } catch {
     console.error(`\nQR Code URL: ${qrResponse.qrcode_img_content}\n`);
   }
@@ -217,10 +237,12 @@ export async function loginWithQR(opts: {
             currentQrcode = newQr.qrcode;
             scannedPrinted = false;
             try {
-              const qrterm = await import("qrcode-terminal");
-              qrterm.default.generate(newQr.qrcode_img_content, { small: true }, (qr: string) => {
-                console.error(qr);
-              });
+              await QRCode.toFile(qrImagePath, newQr.qrcode_img_content, { width: 400, margin: 2 });
+              openFile(qrImagePath);
+            } catch { /* best-effort */ }
+            try {
+              const terminalQR = await QRCode.toString(newQr.qrcode_img_content, { type: "terminal", small: true });
+              console.error(terminalQR);
             } catch {
               console.error(`QR Code URL: ${newQr.qrcode_img_content}`);
             }
@@ -233,6 +255,8 @@ export async function loginWithQR(opts: {
           if (!statusResponse.ilink_bot_id) {
             return { connected: false, message: "登录失败：服务器未返回 ilink_bot_id。" };
           }
+          // Clean up QR image
+          try { fs.unlinkSync(qrImagePath); } catch { /* ignore */ }
           logger.info(`Login confirmed! accountId=${statusResponse.ilink_bot_id} userId=${redactToken(statusResponse.ilink_user_id)}`);
           return {
             connected: true,
